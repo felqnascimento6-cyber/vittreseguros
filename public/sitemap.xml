@@ -16,7 +16,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vittreseguros.com.br/bahia.html</loc>
+    <loc>https://vittreseguros.com.br/bahia</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -61,7 +61,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vittreseguros.com.br/contato.html</loc>
+    <loc>https://vittreseguros.com.br/contato</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -146,7 +146,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vittreseguros.com.br/mato-grosso.html</loc>
+    <loc>https://vittreseguros.com.br/mato-grosso</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -161,12 +161,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vittreseguros.com.br/politica-de-privacidade.html</loc>
+    <loc>https://vittreseguros.com.br/politica-de-privacidade</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vittreseguros.com.br/quem-somos.html</loc>
+    <loc>https://vittreseguros.com.br/quem-somos</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -202,11 +202,6 @@
   </url>
   <url>
     <loc>https://vittreseguros.com.br/sao-paulo</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://vittreseguros.com.br/sao-paulo.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
