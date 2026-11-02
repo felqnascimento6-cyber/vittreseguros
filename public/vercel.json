@@ -1,0 +1,22 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*.html",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.vittreseguros.com.br"
+        }
+      ],
+      "destination": "https://vittreseguros.com.br/$1",
+      "permanent": true
+    }
+  ]
+}

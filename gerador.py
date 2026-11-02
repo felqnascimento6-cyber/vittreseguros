@@ -118,9 +118,9 @@ def gerar_links_vizinhas_e_hub(cidade, cidades_validas, estado_slug, estado_nome
     if vizinhos:
         html_vizinhos += '<div class="mt-6 pt-4 border-t border-slate-200"><h4 class="text-xs font-bold text-slate-500 uppercase mb-2">Cidades Vizinhas Atendidas:</h4><div class="flex flex-wrap gap-2">'
         for v in vizinhos:
-            html_vizinhos += f'<a href="/{v["slug"]}.html" class="bg-slate-100 hover:bg-blue-50 text-slate-700 px-3 py-1 rounded text-xs font-semibold">{v["nome"]} ({v["uf"]})</a>'
+            html_vizinhos += f'<a href="/{v["slug"]}" class="bg-slate-100 hover:bg-blue-50 text-slate-700 px-3 py-1 rounded text-xs font-semibold">{v["nome"]} ({v["uf"]})</a>'
         html_vizinhos += '</div></div>'
-    html_hub = f'<div class="mt-4"><a href="/{estado_slug}.html" class="text-blue-600 font-bold text-sm hover:underline">&larr; Ver todas as cidades atendidas no estado de {estado_nome}</a></div>'
+    html_hub = f'<div class="mt-4"><a href="/{estado_slug}" class="text-blue-600 font-bold text-sm hover:underline">&larr; Ver todas as cidades atendidas no estado de {estado_nome}</a></div>'
     return html_vizinhos + html_hub
 
 def gerar_html_cidade(cidade, cidades_validas):
@@ -134,7 +134,7 @@ def gerar_html_cidade(cidade, cidades_validas):
     destaque = cidade["principal_destaque"]
     is_preview = cidade.get("_preview", False)
     
-    canonical_url = f"{CONFIG['site_url']}/{slug}.html"
+    canonical_url = f"{CONFIG['site_url']}/{slug}"
     carrossel_html = gerar_carrossel(cidade["operadoras"])
     faq_html = gerar_faq(nome, cidade["operadoras"])
     
@@ -415,7 +415,7 @@ def gerar_pagina_principal(cidades_validas):
     cards_cidades = ""
     for c in sorted(cidades_validas, key=lambda x: x["nome"]):
         cards_cidades += f'''
-        <a href="/{c["slug"]}.html" class="group p-4 rounded-xl border border-slate-200 hover:border-blue-600 hover:bg-blue-50 transition duration-200 flex justify-between items-center shadow-sm">
+        <a href="/{c["slug"]}" class="group p-4 rounded-xl border border-slate-200 hover:border-blue-600 hover:bg-blue-50 transition duration-200 flex justify-between items-center shadow-sm">
             <span class="font-bold text-slate-700 group-hover:text-blue-900">{c["nome"]} <span class="text-slate-400 font-normal">({c["uf"]})</span></span>
             <span class="text-blue-600 opacity-0 group-hover:opacity-100 transition duration-200">&rarr;</span>
         </a>'''
@@ -659,7 +659,7 @@ def gerar_pagina_institucional(titulo, slug, conteudo_html):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{titulo} | Vittre Seguros</title>
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{CONFIG['site_url']}/{slug}.html">
+    <link rel="canonical" href="{CONFIG['site_url']}/{slug}">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -680,7 +680,7 @@ def gerar_hub_estado(uf_sigla, uf_nome, cidades_estado, modo_preview=False):
     meta_robots = "index, follow" if (len(cidades_estado) >= 3 and not modo_preview) else "noindex, follow"
     lista_links = ""
     for c in cidades_estado:
-        lista_links += f'<li><a href="/{c["slug"]}.html" class="text-blue-600 font-bold hover:underline">Plano de Saúde em {c["nome"]} ({c["uf"]})</a></li>'
+        lista_links += f'<li><a href="/{c["slug"]}" class="text-blue-600 font-bold hover:underline">Plano de Saúde em {c["nome"]} ({c["uf"]})</a></li>'
     return f'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -845,7 +845,7 @@ if __name__ == "__main__":
         with open(caminho, "w", encoding="utf-8") as f:
             f.write(html)
         if not cidade.get("_preview", False):
-            sitemap_urls.append(f"{CONFIG['site_url']}/{cidade['slug']}.html")
+            sitemap_urls.append(f"{CONFIG['site_url']}/{cidade['slug']}")
         count += 1
 
     estados = {
@@ -866,7 +866,7 @@ if __name__ == "__main__":
         with open(os.path.join("public", f"{slug_estado}.html"), "w", encoding="utf-8") as f:
             f.write(hub_html)
         if len(cidades_do_estado) >= 3 and not modo_preview:
-            sitemap_urls.append(f"{CONFIG['site_url']}/{slug_estado}.html")
+            sitemap_urls.append(f"{CONFIG['site_url']}/{slug_estado}")
 
     inst_pages = {
         "quem-somos.html": ("Quem Somos", "<p>A <strong>Vittre Seguros</strong> é uma corretora especializada em soluções de assistência médica e planos de saúde.</p>"),
@@ -877,7 +877,7 @@ if __name__ == "__main__":
         page_html = gerar_pagina_institucional(title, filename.replace(".html", ""), content)
         with open(os.path.join("public", filename), "w", encoding="utf-8") as f:
             f.write(page_html)
-        sitemap_urls.append(f"{CONFIG['site_url']}/{filename}")
+        sitemap_urls.append(f"{CONFIG['site_url']}/{filename.replace('.html', '')}")
 
     sitemap_xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for url in sorted(list(set(sitemap_urls))):
