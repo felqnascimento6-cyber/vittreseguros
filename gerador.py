@@ -134,6 +134,25 @@ def gerar_html_cidade(cidade, cidades_validas):
     destaque = cidade["principal_destaque"]
     is_preview = cidade.get("_preview", False)
     
+    # --- DADOS ESPECÍFICOS PARA SEO LOCAL (FRANCO DA ROCHA E VIZINHAS) ---
+    if slug == "franco-da-rocha":
+        hospitais_detalhados = "Hospital Previna (Rede Plena Saúde), unidades da Plena Saúde, Laboratório Marelli, Clínica Clinefran, Cientificalab e JK Imagens."
+        tabela_precos = """
+            <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 my-6">
+                <h3 class="font-bold text-blue-950 mb-4 text-lg">Estimativa de Preços em Franco da Rocha</h3>
+                <div class="space-y-3 text-sm text-slate-700">
+                    <div class="flex justify-between border-b border-blue-200 pb-2"><span><strong>Hapvida GNDI</strong> (MEI/PME)</span> <span>A partir de R$ 115,00</span></div>
+                    <div class="flex justify-between border-b border-blue-200 pb-2"><span><strong>NotreDame</strong> (MEI/PME)</span> <span>A partir de R$ 75,00</span></div>
+                    <div class="flex justify-between border-b border-blue-200 pb-2"><span><strong>Bradesco Saúde</strong> (MEI/PME)</span> <span>A partir de R$ 216,00</span></div>
+                    <div class="flex justify-between border-b border-blue-200 pb-2"><span><strong>Unimed Jundiaí</strong> (MEI/PME)</span> <span>A partir de R$ 160,00</span></div>
+                </div>
+                <p class="text-xs text-slate-500 mt-4">*Valores estimados para planos coletivos (MEI/PME) com coparticipação. Consulte nossa equipe para a tabela exata.</p>
+            </div>
+        """
+    else:
+        hospitais_detalhados = hospitais
+        tabela_precos = ""
+
     canonical_url = f"{CONFIG['site_url']}/{slug}"
     carrossel_html = gerar_carrossel(cidade["operadoras"])
     faq_html = gerar_faq(nome, cidade["operadoras"])
@@ -164,19 +183,23 @@ def gerar_html_cidade(cidade, cidades_validas):
 
     robots_content = "noindex, follow" if is_preview else "index, follow"
 
+    # Título otimizado para cliques (CTR) no Google
+    titulo_seo = f"Plano de Saúde em {nome} ({uf}) | Tabelas de Preços e MEI 2026 - Vittre"
+    meta_seo = f"Simule plano de saúde em {nome} ({uf}). Tabelas atualizadas para pessoa física, MEI e PME. Confira os hospitais credenciados como {hospitais_detalhados[:50]}..."
+
     return f'''<!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {ga4_head}
-    <title>Plano de Saúde em {nome} ({uf}) | Tabelas de Preços e Cotação - Vittre</title>
-    <meta name="description" content="Simule plano de saúde em {nome} ({uf}). Tabelas completas para pessoa física, familiar, PME, MEI e adesão. Confira redes credenciadas, carências e regras da ANS.">
+    <title>{titulo_seo}</title>
+    <meta name="description" content="{meta_seo}">
     <meta name="robots" content="{robots_content}">
     <link rel="canonical" href="{canonical_url}">
     
-    <meta property="og:title" content="Plano de Saúde em {nome} ({uf}) | Tabelas e Redes Credenciadas - Vittre Seguros">
-    <meta property="og:description" content="Compare tabelas, preços e redes de hospitais e laboratórios para planos de saúde em {nome} e região.">
+    <meta property="og:title" content="{titulo_seo}">
+    <meta property="og:description" content="{meta_seo}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{canonical_url}">
 
@@ -306,16 +329,18 @@ def gerar_html_cidade(cidade, cidades_validas):
                 {destaque} Nosso compromisso é fornecer uma consultoria 100% transparente, ajudando você a entender quais hospitais, clínicas e laboratórios estão disponíveis no seu plano, além de orientar sobre os critérios de elegibilidade para planos individuais, coletivos por adesão e corporativos PME/MEI.
             </p>
 
-            <div class="grid md:grid-cols-2 gap-6 bg-blue-50 p-6 rounded-xl border border-blue-100 my-6">
+            <div class="grid md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-xl border border-slate-200 my-6">
                 <div>
                     <h3 class="font-bold text-blue-950 mb-2 text-base">Hospitais e Rede Credenciada</h3>
-                    <p class="text-sm text-slate-700 leading-relaxed">{hospitais}</p>
+                    <p class="text-sm text-slate-700 leading-relaxed">{hospitais_detalhados}</p>
                 </div>
                 <div>
                     <h3 class="font-bold text-blue-950 mb-2 text-base">Principais Operadoras Disponíveis</h3>
                     <p class="text-sm text-slate-700 leading-relaxed">{operadoras_lista}</p>
                 </div>
             </div>
+
+            {tabela_precos}
 
             <h3 class="text-xl font-bold text-slate-900 pt-2">Como Escolher o Convênio Médico Ideal em {nome}?</h3>
             <p class="text-slate-700 leading-relaxed">
@@ -395,9 +420,9 @@ def gerar_html_cidade(cidade, cidades_validas):
                 <a href="/" class="text-2xl font-black text-white tracking-tight">VITTRE<span class="text-blue-500">SEGUROS</span></a>
                 <p class="text-xs text-slate-500 mt-2">Corretora especializada em planos de saúde regionais. WhatsApp: {CONFIG['whatsapp_display']}</p>
                 <div class="mt-3 flex gap-4 text-xs justify-center md:justify-start">
-                    <a href="/quem-somos.html" class="hover:text-white underline">Quem Somos</a>
-                    <a href="/contato.html" class="hover:text-white underline">Contato</a>
-                    <a href="/politica-de-privacidade.html" class="hover:text-white underline">Política de Privacidade</a>
+                    <a href="/quem-somos" class="hover:text-white underline">Quem Somos</a>
+                    <a href="/contato" class="hover:text-white underline">Contato</a>
+                    <a href="/politica-de-privacidade" class="hover:text-white underline">Política de Privacidade</a>
                 </div>
                 {bloco_institucional}
             </div>
